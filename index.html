@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Sahrizal Amirul Firdaus">
+    <meta name="description" content="Input Masking Rupiah with jQuery & Pico CSS">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inputmask Implementation</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.classless.min.css">
+</head>
+<body>
+    <main>
+        <h1>Input Masking Rupiah using <a href="https://github.com/plentz/jquery-maskmoney">jQuery Mask-Money</a></h1>
+        <section>
+            <form id="form">
+                <label for="">Type your salary</label>
+                <input type="text" name="currency" id="currency" data-prefix="Rp. " data-thousands="." data-decimals="," data-precision="0" placeholder="Type here, and it will be masked as rupiah with prefix Rp.">
+                <button>Submit!</button>
+            </form>
+        </section>
+
+        <section>
+            <h3>This layout created by using <a href="https://picocss.com/">Pico.css</a> without adding class to your HTML!</h3>
+        </section>
+
+        <!-- Modal result -->
+        <dialog id="modal">
+            <article>
+                <h3>Here's your salary</h3>
+                <p>
+                    Your Salary is <span id="outputCurrency"></span>            
+                </p>
+                <footer>
+                    <a href="#" aria-label="close" id="closeModal" role="button">Okay!</a>
+                </footer>
+            </article>
+        </dialog>
+
+        <dialog id="warning">
+            <article>
+                <h3>You should input more than one character!</h3>
+                <footer>
+                    <a href="#" aria-label="close" id="closeModalWarning" role="button">Okay!</a>
+                </footer>
+            </article>
+        </dialog>
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js" integrity="sha512-Rdk63VC+1UYzGSgd3u2iadi0joUrcwX0IWp2rTh6KXFoAmgOjRS99Vynz1lJPT8dLjvo6JZOqpAHJyfCEZ5KoA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(function() {
+            $('#currency').maskMoney()
+        })
+
+        var currencyInput = $('#currency')
+        var modalResult = $('#modal')
+        var modalWarning = $('#warning')
+
+        $('#form').submit( function(e) {
+
+            e.preventDefault()
+
+            if ( currencyInput.val().length == 0 ) {
+                modalWarning.attr('open', '')
+            } else {
+                // Open modal
+                modalResult.attr('open', '')
+                // Set currency value
+                $('#outputCurrency').text(currencyInput.val())
+            }
+        })
+
+        $('#closeModal').click( function(e){
+            e.preventDefault()
+            modalResult.removeAttr('open')
+            // Reset input currency value
+            currencyInput.val('')           
+        })
+
+        $('#closeModalWarning').click( function(e){
+            e.preventDefault()
+            modalWarning.removeAttr('open')
+            // Reset input currency value
+            currencyInput.val('')           
+        })
+
+    </script>
+</body>
+</html>
